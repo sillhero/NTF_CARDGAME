@@ -29,6 +29,7 @@ export const GlobalContextProvider = ({ children }) => {
         type: "info",
         message: ""
     })
+    const [updateGameData, setUpdateGameData] = useState(0)
 
     const navigate = useNavigate()
 
@@ -69,7 +70,8 @@ export const GlobalContextProvider = ({ children }) => {
                 contract,
                 provider,
                 walletAddress,
-                setShowAlert
+                setShowAlert,
+                setUpdateGameData
             })
         }
     }, [contract])
@@ -112,7 +114,7 @@ export const GlobalContextProvider = ({ children }) => {
             })
         }
         if (contract) fetchGameData()
-    }, [contract])
+    }, [contract, updateGameData])
 
 
     return (
@@ -124,7 +126,9 @@ export const GlobalContextProvider = ({ children }) => {
                 setShowAlert,
                 battleName,
                 setBattleName,
-                gameData
+                gameData,
+                updateGameData
+
             }}
         >
             {children}
