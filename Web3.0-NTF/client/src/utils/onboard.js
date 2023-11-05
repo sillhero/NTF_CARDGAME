@@ -77,7 +77,7 @@ export const GetParams = async () => {
 
   response.account = currentAccount;
 
-  if (getChainID() !== 43113) {
+  if (getChainID() !== 11155111) {
     response.step = 2;
 
     return response;
@@ -103,18 +103,21 @@ export const GetParams = async () => {
 };
 
 export async function SwitchNetwork() {
+  // 给我切换到Sepolia链
+  
+
   await window?.ethereum?.request({
     method: 'wallet_addEthereumChain',
     params: [{
-      chainId: '0xA869',
-      chainName: 'Fuji C-Chain',
+      chainId: '0xAA36A7',
+      chainName: 'Sepolia',
       nativeCurrency: {
-        name: 'AVAX',
-        symbol: 'AVAX',
+        name: 'ETH',
+        symbol: 'ETH',
         decimals: 18,
       },
-      rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-      blockExplorerUrls: ['https://testnet.snowtrace.io'],
+      rpcUrls: ['https://www.alchemy.com/chain-connect/endpoints/rpc-sepolia-sepolia'],
+      blockExplorerUrls: ['https://sepolia.etherscan.io/'],
     }],
   }).catch((error) => {
     console.log(error);

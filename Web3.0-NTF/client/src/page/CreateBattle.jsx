@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
-import { CustomButton,CustomInput, PageHOC, GameLoad } from "../components"
+import { CustomButton, CustomInput, PageHOC, GameLoad } from "../components"
 
-import styles from "../styles";
-import {useNavigate} from "react-router-dom";
-import {useGlobalContext} from "../context";
-
+import styles from "../styles"
+import { useNavigate } from "react-router-dom"
+import { useGlobalContext } from "../context"
 
 const CreateBattle = () => {
     const { contract, battleName, setBattleName, gameData } = useGlobalContext()
@@ -12,6 +11,10 @@ const CreateBattle = () => {
     const [waitBattle, setWaitBattle] = useState(false) // 等待用户加入的标志
 
     useEffect(() => {
+        if (gameData?.activeBattle?.battleStatus === 1) {
+            navigate(`/battle/${gameData.activeBattle.name}`)
+        }
+
         if (gameData?.activeBattle?.battleStatus === 0) {
             setWaitBattle(true)
         }
@@ -19,14 +22,13 @@ const CreateBattle = () => {
 
     const handleClick = async () => {
         if (!battleName || !battleName.trim()) {
-            alert('Please enter a battle name')
-            return null;
+            alert("Please enter a battle name")
+            return null
         }
         try {
             await contract.createBattle(battleName)
 
             setWaitBattle(true)
-
         } catch (err) {
             console.log(err)
         }
@@ -48,10 +50,16 @@ const CreateBattle = () => {
                     restStyles="mt-6"
                 ></CustomButton>
             </div>
-            <p className={styles.infoText} onClick={() => navigate('/join-battle')}>
+            <p
+                className={styles.infoText}
+                onClick={() => navigate("/join-battle")}
+            >
                 或者加入一个已有的房间
             </p>
-            <p className={styles.infoTextWhite} onClick={() => navigate('/join-battle')}>
+            <p
+                className={styles.infoTextWhite}
+                onClick={() => navigate("/join-battle")}
+            >
                 Or join an existing battle
             </p>
         </>

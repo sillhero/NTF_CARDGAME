@@ -4,7 +4,7 @@ import React, {
     useContext,
     useEffect,
     useRef,
-    useState
+    useState,
 } from "react"
 import { ethers } from "ethers"
 import { useNavigate } from "react-router-dom"
@@ -12,6 +12,8 @@ import { ABI, ADDRESS } from "../contract"
 import { logo } from "../assets"
 import Web3Modal from "web3modal"
 import { createEventListeners } from "./createEventListeners"
+
+import { GetParams } from "../utils/onboard"
 
 const GlobalContext = createContext()
 
@@ -21,15 +23,24 @@ export const GlobalContextProvider = ({ children }) => {
     const [provider, setProvider] = useState(null)
     const [contract, setContract] = useState(null)
     const [battleName, setBattleName] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
     const [gameData, setGameData] = useState({
-        players: [], pendingBattles: [], activeBattle: null
+        players: [],
+        pendingBattles: [],
+        activeBattle: null,
     })
     const [showAlert, setShowAlert] = useState({
         status: false,
         type: "info",
-        message: ""
+        message: "",
     })
     const [updateGameData, setUpdateGameData] = useState(0)
+    // 战斗背景
+    const [battleGround, setBattleGround] = useState("bg-astral") // 这里设置就是为了让静态的背景图片可以动态变化
+    const [step, setStep] = useState(1) // 这里的步骤是用来控制模态框的显示的
+
+    const player1Ref = useRef()
+    const player2Ref = useRef()
 
     const navigate = useNavigate()
 
@@ -37,10 +48,35 @@ export const GlobalContextProvider = ({ children }) => {
     // 这里的调用是有一些问题的
     const updateCurrentWalletAddress = async () => {
         const accounts = await window.ethereum.request({
-            method: "eth_requestAccounts"
+            method: "eth_requestAccounts",
         })
         if (accounts) setWalletAddress(accounts[0])
     }
+
+    // 重置 web3的模态框
+    useEffect(() => {
+        const resetParms = async () => {
+            const currentStep = await GetParams()
+            setStep(currentStep)
+        }
+
+        resetParms()
+
+        window?.ethereum?.on("chainChanged", () => resetParms())
+        window?.ethereum?.on("accountsChanged", () => resetParms())
+    }, [])
+
+    // 确保背景图片已经存储在本地
+    useEffect(() => {
+        const BattlegroundFromLocalStorage =
+            localStorage.getItem("battleground")
+
+        if (BattlegroundFromLocalStorage) {
+            setBattleGround(BattlegroundFromLocalStorage)
+        } else {
+            localStorage.setItem("battleground", battleGround)
+        }
+    }, [])
 
     // 用户变更的监听
     useEffect(() => {
@@ -64,17 +100,19 @@ export const GlobalContextProvider = ({ children }) => {
 
     // 事件绑定的问题（监听）
     useEffect(() => {
-        if (contract) {
+        if (step !== -1 && contract) {
             createEventListeners({
                 navigate,
                 contract,
                 provider,
                 walletAddress,
                 setShowAlert,
-                setUpdateGameData
+                setUpdateGameData,
+                player1Ref,
+                player2Ref,
             })
         }
-    }, [contract])
+    }, [contract, step])
 
     // 提示栏触发器
     useEffect(() => {
@@ -83,24 +121,48 @@ export const GlobalContextProvider = ({ children }) => {
                 setShowAlert({
                     status: false,
                     type: "info",
-                    message: ""
+                    message: "",
                 })
             }, [5000])
             return () => clearTimeout(timer)
         }
     }, [showAlert])
 
+    // 处理错误信息
+    useEffect(() => {
+        if (errorMessage) {
+            const parsedErrorMessage = errorMessage?.reason
+                ?.slice("execution reverted: ".length)
+                .slice(0, -1)
+
+            if (parsedErrorMessage) {
+                setShowAlert({
+                    status: true,
+                    type: "failure",
+                    message: parsedErrorMessage,
+                })
+            }
+        }
+    }, [errorMessage])
+
     // 将游戏相关数据初始化
     useEffect(() => {
         const fetchGameData = async () => {
             const fetchedBattles = await contract.getAllBattles()
             console.log(fetchedBattles)
-            const pendingBattles = fetchedBattles.filter((battle) => battle.battleStatus === 0)
+            const pendingBattles = fetchedBattles.filter(
+                (battle) => battle.battleStatus === 0
+            )
             let activeBattle = null
 
             fetchedBattles.forEach((battle) => {
                 console.log(battle.players)
-                if (battle.players.find((player) => player.toLowerCase() === walletAddress.toLowerCase())) {
+                if (
+                    battle.players.find(
+                        (player) =>
+                            player.toLowerCase() === walletAddress.toLowerCase()
+                    )
+                ) {
                     console.log("battle", battle)
                     if (battle.winner.startsWith("0x00")) {
                         activeBattle = battle
@@ -110,12 +172,11 @@ export const GlobalContextProvider = ({ children }) => {
             console.log("activeBattle", activeBattle)
             setGameData({
                 pendingBattles: pendingBattles.slice(1),
-                activeBattle
+                activeBattle,
             })
         }
         if (contract) fetchGameData()
     }, [contract, updateGameData])
-
 
     return (
         <GlobalContext.Provider
@@ -127,8 +188,14 @@ export const GlobalContextProvider = ({ children }) => {
                 battleName,
                 setBattleName,
                 gameData,
-                updateGameData
-
+                updateGameData,
+                battleGround,
+                setBattleGround,
+                player1Ref,
+                player2Ref,
+                errorMessage,
+                setErrorMessage,
+                updateCurrentWalletAddress,
             }}
         >
             {children}
