@@ -37,7 +37,7 @@ const Battle = () => {
             if (!gameData?.activeBattle) {
                 navigate("/")
             }
-        }, [2000])
+        }, [5000])
 
         return () => clearTimeout(timer)
     }, [])
