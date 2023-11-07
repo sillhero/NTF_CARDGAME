@@ -21,6 +21,7 @@ const GameInfo = () => {
                 type: "info",
                 message: `You are quitting the ${battleName} battle`,
             })
+            navigate("/createBattle")
         } catch (error) {
             setErrorMessage(error)
         }

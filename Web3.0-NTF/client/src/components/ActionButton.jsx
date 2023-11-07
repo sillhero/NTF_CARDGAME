@@ -2,7 +2,7 @@ import React from "react"
 
 import styles from "../styles"
 
-const ActionButton = ({ imgUrl, handleClick, restStyles }) => {
+const ActionButton = ({ imgUrl, handleClick, restStyles, action }) => {
     return (
         <div
             className={`${styles.gameMoveBox} ${styles.flexCenter} ${styles.glassEffect} ${restStyles}`}
@@ -12,6 +12,8 @@ const ActionButton = ({ imgUrl, handleClick, restStyles }) => {
                 src={imgUrl}
                 alt="action_img"
                 className={styles.gameMoveIcon}
+                // 悬停显示信息
+                title={action === "attack" ? "Attack" : "Defense"}
             />
         </div>
     )

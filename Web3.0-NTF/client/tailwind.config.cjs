@@ -16,6 +16,9 @@ module.exports = {
         panight: "url('/src/assets/background/panight.jpg')",
         heroImg: "url('/src/assets/background/hero-img.jpg')",
         landing: "url('/src/assets/background/landing.jpg')",
+        cartoon1: "url('/src/assets/background/cartoon1.jpg')",
+        cartoon2: "url('/src/assets/background/cartoon2.jpg')",
+        cartoon3: "url('/src/assets/background/cartoon3.jpg')",
       },
       fontFamily: {
         rajdhani: ['Rajdhani', 'sans-serif'],

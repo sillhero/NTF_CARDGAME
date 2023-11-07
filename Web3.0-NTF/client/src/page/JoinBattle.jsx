@@ -35,7 +35,8 @@ const JoinBattle = () => {
         console.log("battleName", battleName)
         setBattleName(battleName)
         try {
-            await contract.joinBattle(battleName)
+            let result = await contract.joinBattle(battleName)
+            console.log("result", result)
             setShowAlert({
                 status: true,
                 type: "success",
@@ -47,7 +48,7 @@ const JoinBattle = () => {
     }
     return (
         <div>
-            <h2 className={styles.joinHeadText}>Available Battles</h2>
+            <h2 className={styles.joinHeadText}>可加入战局</h2>
 
             {gameData.pendingBattles.length ? (
                 gameData.pendingBattles
@@ -71,9 +72,7 @@ const JoinBattle = () => {
                         </div>
                     ))
             ) : (
-                <p className={styles.joinLoading}>
-                    Reload the page to see new battles
-                </p>
+                <p className={styles.joinLoading}>刷新页面查看新的战局</p>
             )}
             <p
                 className={styles.infoText}
@@ -81,7 +80,7 @@ const JoinBattle = () => {
                     navigate("/createBattle")
                 }}
             >
-                Or create a new Battle
+                或者创建一场新的战局
             </p>
         </div>
     )
@@ -89,7 +88,7 @@ const JoinBattle = () => {
 export default PageHOC(
     JoinBattle,
     <div>
-        Join <br /> a Battle
+        加入 <br /> 一场战局
     </div>,
-    <div>Join an existing battle and start playing</div>
+    <div>加入一场已经存在的战局</div>
 )

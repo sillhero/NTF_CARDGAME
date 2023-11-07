@@ -142,6 +142,7 @@ const Battle = () => {
                         imgUrl={attack}
                         handleClick={() => makeAMove(1)}
                         restStyles="mr-2 hover:border-yellow-400"
+                        action="attack"
                     ></ActionButton>
                     <Card
                         card={player1}
@@ -153,6 +154,7 @@ const Battle = () => {
                         imgUrl={defense}
                         handleClick={() => makeAMove(2)}
                         restStyles="ml-6 hover:border-red-600"
+                        action="defense"
                     ></ActionButton>
                 </div>
             </div>

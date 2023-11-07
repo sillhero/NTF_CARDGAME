@@ -59,16 +59,16 @@ const Home = () => {
 
     return (
         <div className="flex flex-col">
-            <h1>{walletAddress}</h1>
+            {/* <h1>{walletAddress}</h1> */}
             <CustomInput
-                label="Name"
-                placeholder="Enter your player"
+                label="游戏昵称"
+                placeholder="输入您的游戏昵称"
                 value={playerName}
                 handleValueChange={setPlayerName}
             ></CustomInput>
 
             <CustomButton
-                title="Register"
+                title="注册"
                 handleClick={handleClick}
                 restStyles="mt-6"
             ></CustomButton>
@@ -79,10 +79,11 @@ const Home = () => {
 export default PageHOC(
     Home,
     <div>
-        Welcome to sepolia Gods <br />a Web3 NFT Card Game
+        欢迎来到sepolia Gods <br />
+        一款Web3-NFT卡牌游戏
     </div>,
     <div>
-        Connect your wallet to start playing <br />
+        连接你的钱包并开始游戏 <br />
         the ultimate battle-style card game
     </div>
 )

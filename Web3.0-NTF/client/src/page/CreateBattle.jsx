@@ -39,13 +39,13 @@ const CreateBattle = () => {
             {waitBattle && <GameLoad />}
             <div className="flex flex-col mb-5">
                 <CustomInput
-                    label="Battle"
-                    placeholder="Enter battle name"
+                    label="战局"
+                    placeholder="请输入战局名称"
                     value={battleName}
                     handleValueChange={setBattleName}
                 />
                 <CustomButton
-                    title="Create Battle"
+                    title="创建"
                     handleClick={handleClick}
                     restStyles="mt-6"
                 ></CustomButton>
@@ -68,8 +68,6 @@ const CreateBattle = () => {
 
 export default PageHOC(
     CreateBattle,
-    <div>
-        Create <br />a New Battles
-    </div>,
-    <div>Create your own battle and wait for other players to join you</div>
+    <div>创建 新战局</div>,
+    <div>创建您自己的战场并且等待其他玩家加入</div>
 )

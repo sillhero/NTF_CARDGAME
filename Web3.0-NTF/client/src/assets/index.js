@@ -4,6 +4,9 @@ import astral from './background/astral.jpg';
 import eoaalien from './background/eoaalien.jpg';
 import panight from './background/panight.jpg';
 import heroImg from './background/hero-img.jpg';
+import cartoon1 from './background/cartoon1.jpg';
+import cartoon2 from './background/cartoon2.jpg';
+import cartoon3 from './background/cartoon3.jpg';
 
 // cards
 import ace from './Ace.png';
@@ -38,7 +41,7 @@ import widowmaker from './Widowmaker.png';
 import xho from './Xho.png';
 
 // logo
-import logo from './logo.svg';
+import logo from './logo.jpg';
 
 // icon
 import attack from './attack.png';
@@ -146,13 +149,16 @@ export const battlegrounds = [
   { id: 'bg-astral', image: astral, name: 'Astral' },
   { id: 'bg-eoaalien', image: eoaalien, name: 'Eoaalien' },
   { id: 'bg-panight', image: panight, name: 'Panight' },
+  { id: 'bg-cartoon1', image: cartoon1, name: 'Cartoon1'},
+  { id: 'bg-cartoon2', image: cartoon2, name: 'Cartoon2'},
+  { id: 'bg-cartoon3', image: cartoon3, name: 'Cartoon3'}
 ];
 
 export const gameRules = [
-  'Card with the same defense and attack point will cancel each other out.',
-  'Attack points from the attacking card will deduct the opposing player’s health points.',
-  'If P1 does not defend, their health wil be deducted by P2’s attack.',
-  'If P1 defends, P2’s attack is equal to P2’s attack - P1’s defense.',
-  'If a player defends, they refill 3 Mana',
-  'If a player attacks, they spend 3 Mana',
+  '防御力和攻击力相同的卡牌会互相抵消。',
+  '攻击卡牌的攻击力会扣除对方玩家的生命值。',
+  '如果P1不防御，则P2的攻击会扣除对方的生命值。 ', 
+  '如果 P1 防守，并且P2开始攻击，P1会受到 P2攻击力高于防守力的部分', 
+  '如果玩家防守，他们会补充 3 点法力', 
+  '如果玩家攻击，他们会消耗 3 点法力',
 ];
