@@ -68,6 +68,6 @@ const CreateBattle = () => {
 
 export default PageHOC(
     CreateBattle,
-    <div>创建 新战局</div>,
+    <div>创建 新对局</div>,
     <div>创建您自己的战场并且等待其他玩家加入</div>
 )
